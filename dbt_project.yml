@@ -1,0 +1,28 @@
+name: "astrafy_analytics"
+version: "1.0.0"
+config-version: 2
+
+profile: "astrafy_analytics"
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  astrafy_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  exercise_year: 2026

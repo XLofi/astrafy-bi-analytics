@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: >
+      Cleaned and standardized order-level data. The expected grain is
+      one row per order.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of an order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: order_net_sales
+        description: Net sales amount associated with the order.
+        data_tests:
+          - not_null

@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# dbt
+target/
+dbt_packages/
+logs/
+
+# Local credentials
+.env
+profiles.yml
+*.json
+
+# Challenge source data
+data/*.xlsx
+data/*.csv
+
+# Windows download metadata
+*:Zone.Identifier

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw source data provided for the Astrafy BI Analytics challenge.
+    database: astrafy-bch-xlofi-2026
+    schema: astrafy_analytics_raw
+
+    tables:
+      - name: orders
+        description: >
+          Raw order-level dataset. The expected grain is one row per order.
