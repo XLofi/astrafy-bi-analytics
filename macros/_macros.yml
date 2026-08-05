@@ -2,7 +2,7 @@ version: 2
 
 macros:
   - name: classify_order_segment
-    description: >
+    description: |
       Converts the number of customer orders placed during the preceding
       12 months into the business segmentation used by Astrafy.
 
