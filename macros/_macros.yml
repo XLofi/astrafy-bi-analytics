@@ -1,0 +1,31 @@
+version: 2
+
+macros:
+  - name: classify_order_segment
+    description: >
+      Converts the number of customer orders placed during the preceding
+      12 months into the business segmentation used by Astrafy.
+
+      The classification rules are:
+
+      - New: zero prior orders
+      - Returning: between one and three prior orders
+      - VIP: four or more prior orders
+
+      An Unknown fallback is included defensively for null or otherwise
+      unexpected values, although upstream tests require the input value
+      to be non-null.
+
+    config:
+      docs:
+        show: true
+      meta:
+        owner: analytics_engineering
+        business_domain: customer_segmentation
+
+    arguments:
+      - name: prior_orders_12m
+        type: column
+        description: >
+          SQL column or expression containing the number of orders placed
+          by the customer during the preceding 12 months.

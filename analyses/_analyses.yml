@@ -1,0 +1,197 @@
+version: 2
+
+analyses:
+  - name: exercise_01_orders_by_year
+    description: >
+      Answers Exercise 1 by calculating the number of orders placed during
+      the configured exercise year. The query uses the tested one-row-per-order
+      stg_orders model and filters using explicit year boundaries.
+    config:
+      docs:
+        show: true
+      tags:
+        - exercise
+        - order_analysis
+    columns:
+      - name: number_of_orders
+        description: >
+          Total number of orders placed during the configured exercise year.
+
+  - name: exercise_02_orders_per_month
+    description: >
+      Answers Exercise 2 by calculating the number of orders placed during
+      each calendar month of the configured exercise year. The monthly totals
+      should reconcile with the annual total from Exercise 1.
+    config:
+      docs:
+        show: true
+      tags:
+        - exercise
+        - order_analysis
+    columns:
+      - name: order_month
+        description: >
+          First calendar date of the month used to group orders.
+
+      - name: number_of_orders
+        description: >
+          Number of orders placed during the corresponding calendar month.
+
+  - name: exercise_03_average_products_per_order
+    description: >
+      Answers Exercise 3 by calculating the average quantity of product units
+      included in an order for each month of the configured exercise year.
+      The calculation uses the one-row-per-order int_orders_enriched model.
+    config:
+      docs:
+        show: true
+      tags:
+        - exercise
+        - product_analysis
+    columns:
+      - name: order_month
+        description: >
+          First calendar date of the month used to group orders.
+
+      - name: number_of_orders
+        description: >
+          Number of orders included in the monthly average. This value is
+          included as a reconciliation control against Exercise 2.
+
+      - name: average_products_per_order
+        description: >
+          Average total quantity of product units included in an order during
+          the month, rounded to two decimal places.
+
+  - name: exercise_05_order_segmentation
+    description: >
+      Answers Exercise 5 by returning every order placed during the configured
+      exercise year together with its customer order segment. Segmentation is
+      based on orders placed by the customer on earlier calendar dates during
+      the preceding 12 months.
+    config:
+      docs:
+        show: true
+      tags:
+        - exercise
+        - customer_segmentation
+    columns:
+      - name: order_id
+        description: Unique identifier of the order.
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+
+      - name: order_date
+        description: Date on which the order was placed.
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier calendar dates
+          during the preceding 12 months.
+
+      - name: order_segmentation
+        description: >
+          New when the customer has no prior orders, Returning when the
+          customer has between one and three prior orders, and VIP when the
+          customer has four or more prior orders.
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the supplied source data covers the complete
+          12-month period preceding the order.
+
+  - name: orphan_sales_orders
+    description: >
+      Data-quality analysis identifying sales order IDs that do not have a
+      corresponding record in the authoritative orders source. These records
+      are preserved in staging but excluded from valid order-level metrics.
+    config:
+      docs:
+        show: true
+      tags:
+        - data_quality
+        - reconciliation
+    columns:
+      - name: order_id
+        description: Sales order identifier missing from the orders source.
+
+      - name: order_date
+        description: Earliest sales-line date associated with the orphan order.
+
+      - name: customer_id
+        description: Customer identifier associated with the orphan order.
+
+      - name: sales_line_count
+        description: Number of product sales lines associated with the orphan order.
+
+      - name: total_quantity
+        description: Total product quantity associated with the orphan order.
+
+      - name: total_net_sales
+        description: Total net sales amount associated with the orphan order.
+
+  - name: segmentation_history_coverage
+    description: >
+      Diagnostic analysis measuring whether orders placed in 2026 have a
+      complete preceding 12-month history. This analysis exposes the limitation
+      caused by the source data beginning on 9 July 2025.
+    config:
+      docs:
+        show: true
+      tags:
+        - data_quality
+        - customer_segmentation
+    columns:
+      - name: first_available_order_date
+        description: Earliest order date available in the supplied source data.
+
+      - name: last_available_order_date
+        description: Latest order date available in the supplied source data.
+
+      - name: first_date_with_complete_12_month_history
+        description: >
+          First order date for which the supplied dataset contains a complete
+          preceding 12-month observation window.
+
+      - name: orders_with_incomplete_history
+        description: >
+          Number of 2026 orders whose preceding 12-month history is only
+          partially observable.
+
+      - name: orders_with_complete_history
+        description: >
+          Number of 2026 orders whose complete preceding 12-month history is
+          available.
+
+  - name: segmentation_same_day_orders
+    description: >
+      Diagnostic analysis identifying customers who placed multiple orders on
+      the same calendar date. Since the source contains dates but no timestamps,
+      the chronological order of these purchases cannot be determined.
+    config:
+      docs:
+        show: true
+      tags:
+        - data_quality
+        - customer_segmentation
+    columns:
+      - name: customer_day_groups
+        description: >
+          Number of customer and calendar-date combinations containing more
+          than one order.
+
+      - name: affected_orders
+        description: >
+          Total number of orders belonging to customer-date combinations with
+          multiple orders.
+
+      - name: customer_day_groups_in_2026
+        description: >
+          Number of customer-date combinations with multiple orders during
+          2026.
+
+      - name: affected_orders_in_2026
+        description: >
+          Number of 2026 orders belonging to customer-date combinations with
+          multiple orders.
