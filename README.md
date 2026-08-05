@@ -62,3 +62,20 @@ chronologically.
 The sum of all monthly order counts is **2,573**, matching the result of
 Exercise 1.
 
+
+## Exercise 3 — Average products per order by month
+
+### Metric definition
+
+The number of products in an order is interpreted as the total number
+of units purchased:
+
+`qty_product = SUM(product_quantity)`
+
+This differs from:
+
+- `product_line_count`: number of product rows
+- `distinct_product_count`: number of different products
+
+The monthly average is calculated from the one-row-per-order
+`int_orders_enriched` model using `AVG(qty_product)`.

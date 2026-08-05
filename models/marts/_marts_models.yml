@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: >
+      Order fact table covering 2025 and 2026. The grain is one row per
+      order and the table includes the total quantity of product units
+      associated with each order.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of an order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: order_net_sales
+        description: Net sales amount associated with the order.
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: Total number of product units included in the order.
+        data_tests:
+          - not_null

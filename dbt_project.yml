@@ -26,3 +26,4 @@ models:
 
 vars:
   exercise_year: 2026
+  order_history_start_year: 2025
