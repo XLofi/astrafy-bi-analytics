@@ -33,3 +33,62 @@ models:
         description: Total number of product units included in the order.
         data_tests:
           - not_null
+
+  - name: fct_orders_segmented_2026
+    description: >
+      Final order fact table for the configured exercise year, containing
+      one row per order and its rolling 12-month customer segmentation.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of an order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: order_net_sales
+        description: Net sales amount associated with the order.
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: Total number of product units included in the order.
+        data_tests:
+          - not_null
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier calendar
+          dates during the preceding 12 months.
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: >
+          Customer order segment based on the preceding 12-month order
+          history.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the supplied data covers the full 12-month
+          period preceding the order.
+        data_tests:
+          - not_null
