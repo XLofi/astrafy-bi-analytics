@@ -19,3 +19,6 @@ data/*.csv
 
 # Windows download metadata
 *:Zone.Identifier
+
+# Windows download metadata
+*:Zone.Identifier
