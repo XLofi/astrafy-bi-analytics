@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: int_order_product_metrics
+    description: >
+      Order-level product and revenue metrics calculated from valid sales
+      lines. The model contains one row per order present in stg_orders.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of the order.
+        data_tests:
+          - not_null
+          - unique
+
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: qty_product
+        description: Total quantity of product units included in the order.
+        data_tests:
+          - not_null
+
+      - name: distinct_product_count
+        description: Number of distinct products included in the order.
+        data_tests:
+          - not_null
+
+      - name: product_line_count
+        description: Number of product-level sales lines associated with the order.
+        data_tests:
+          - not_null
+
+      - name: calculated_order_net_sales
+        description: Order revenue reconstructed by summing its sales lines.
+        data_tests:
+          - not_null
+
+  - name: int_orders_enriched
+    description: >
+      Canonical order-level intermediate model enriched with product
+      quantities, product counts, and reconstructed sales revenue.
+      The grain is one row per order.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of the order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: order_net_sales
+        description: Net sales amount from the order source.
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: Total number of product units included in the order.
+        data_tests:
+          - not_null
+
+      - name: distinct_product_count
+        description: Number of distinct products included in the order.
+        data_tests:
+          - not_null
+
+      - name: revenue_difference
+        description: >
+          Difference between order-level revenue and revenue reconstructed
+          from product sales lines.
+        data_tests:
+          - not_null
