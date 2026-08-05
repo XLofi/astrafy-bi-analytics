@@ -10,3 +10,8 @@ sources:
       - name: orders
         description: >
           Raw order-level dataset. The expected grain is one row per order.
+
+      - name: sales
+        description: >
+          Raw product sales-line dataset. The expected grain is one row
+          per order and product.
