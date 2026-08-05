@@ -82,3 +82,82 @@ models:
           from product sales lines.
         data_tests:
           - not_null
+
+  - name: int_order_rolling_history
+    description: >
+      Order-level model containing the number of orders placed by the
+      customer during the preceding 12 months. Orders placed on the same
+      calendar date are not treated as prior orders because the supplied
+      data does not include order timestamps.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of the current order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the current order was placed.
+        data_tests:
+          - not_null
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier dates during
+          the 12 months preceding the current order.
+        data_tests:
+          - not_null
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the available source data covers the full
+          12-month period preceding the order.
+        data_tests:
+          - not_null
+
+  - name: int_orders_segmented
+    description: >
+      Order-level model containing the customer order segment calculated
+      from the number of orders placed during the preceding 12 months.
+      Orders placed on the same calendar date are not counted as prior
+      orders because the source does not contain timestamps.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of the order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier calendar
+          dates during the preceding 12 months.
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: >
+          New when there are no prior orders, Returning when there are
+          between one and three, and VIP when there are four or more.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the supplied source covers the complete
+          12-month period preceding the order.
+        data_tests:
+          - not_null
