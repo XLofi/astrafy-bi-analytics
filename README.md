@@ -1,81 +1,71 @@
 # Astrafy BI Analytics Take-Home Challenge
 
-## Exercise 1 — Number of orders in 2026
+This repository contains the analytics engineering solution for the Astrafy
+**Looker / BI / Analytics / Insights Engineer** take-home challenge.
 
-### Result
+The current implementation covers **Part 1: Coding Challenge** using dbt Core
+and BigQuery. It includes source preparation, layered models, customer
+segmentation, data-quality controls, BigQuery optimizations, and documented
+answers to Exercises 1–6.
 
-There are **2,573 orders** in 2026.(1088 in 2025).
+## Technology stack
 
-### Business definition
+- BigQuery
+- dbt Core 1.12 and dbt-bigquery 1.12
+- Python 3.12
+- pandas and openpyxl
+- Git and GitHub
 
-An order is identified by one unique `order_id` in the `stg_orders`
-model.
+## Documentation
 
-### Implementation
+### Project documentation
 
-The analysis filters orders using the following interval:
+- [Architecture](docs/architecture.md)
+- [Environment and setup](docs/setup.md)
+- [Source preparation and ingestion](docs/source_ingestion.md)
+- [Assumptions and limitations](docs/assumptions.md)
+- [Data-quality controls](docs/data_quality.md)
+- [Performance and cost considerations](docs/performance.md)
+- [Final validation summary](docs/validation_summary.md)
 
-- `order_date >= 2026-01-01`
-- `order_date < 2027-01-01`
+### Exercise documentation
 
-The year is configured through the `exercise_year` dbt variable, allowing
-the same query to be reused for another year.
+- [Exercise 1 — Number of orders in 2026](docs/exercises/exercise_01.md)
+- [Exercise 2 — Orders per month in 2026](docs/exercises/exercise_02.md)
+- [Exercise 3 — Average products per order](docs/exercises/exercise_03.md)
+- [Exercise 4 — Order table for 2025 and 2026](docs/exercises/exercise_04.md)
+- [Exercise 5 — Customer order segmentation](docs/exercises/exercise_05.md)
+- [Exercise 6 — Final segmented 2026 table](docs/exercises/exercise_06.md)
 
-### Data-quality validation
+## Quick start
 
-The `order_id` column is tested for:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install dbt-bigquery pandas openpyxl
 
-- Non-null values
-- Uniqueness
+dbt debug
+dbt build
+```
 
-Because the model has a tested one-row-per-order grain, the analysis uses
-`COUNT(*)` rather than `COUNT(DISTINCT order_id)`.
+Generate the dbt documentation catalogue:
 
-## Exercise 2 — Number of orders per month in 2026
+```bash
+dbt docs generate
+dbt docs serve --port 8080 --no-browser
+```
 
-| Month | Number of orders |
-|---|---:|
-| January 2026 | 232 |
-| February 2026 | 176 |
-| March 2026 | 203 |
-| April 2026 | 188 |
-| May 2026 | 172 |
-| June 2026 | 169 |
-| July 2026 | 193 |
-| August 2026 | 167 |
-| September 2026 | 212 |
-| October 2026 | 223 |
-| November 2026 | 389 |
-| December 2026 | 249 |
-| **Total** | **2,573** |
+## Current build result
 
-### Implementation
+```text
+Models: 8
+Analyses: 7
+Data tests: 60
+Passes: 67
+Warnings: 1
+Errors: 0
+Skipped: 0
+Total executed nodes: 68
+```
 
-Orders are grouped using `DATE_TRUNC(order_date, MONTH)` after applying
-the configured yearly date range.
-
-The result contains one row per calendar month and is sorted
-chronologically.
-
-### Validation
-
-The sum of all monthly order counts is **2,573**, matching the result of
-Exercise 1.
-
-
-## Exercise 3 — Average products per order by month
-
-### Metric definition
-
-The number of products in an order is interpreted as the total number
-of units purchased:
-
-`qty_product = SUM(product_quantity)`
-
-This differs from:
-
-- `product_line_count`: number of product rows
-- `distinct_product_count`: number of different products
-
-The monthly average is calculated from the one-row-per-order
-`int_orders_enriched` model using `AVG(qty_product)`.
+The single warning corresponds to one documented orphan sales order.
