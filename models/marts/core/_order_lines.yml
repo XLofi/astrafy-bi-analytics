@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: fct_order_lines
+    description: >
+      Product-level sales fact table containing one row per valid order
+      and product. The model enriches sales lines with authoritative order
+      dates, customers, and rolling customer segmentation.
+
+    columns:
+      - name: order_id
+        description: Identifier of the order containing the product.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders_segmented')
+                field: order_id
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: product_id
+        description: Identifier of the product included in the order.
+        data_tests:
+          - not_null
+
+      - name: product_quantity
+        description: Number of units sold for the product line.
+        data_tests:
+          - not_null
+
+      - name: line_net_sales
+        description: Net sales revenue associated with the product line.
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: >
+          Segment assigned to the order using the customer's preceding
+          12-month order history.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier calendar
+          dates during the preceding 12 months.
+        data_tests:
+          - not_null
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the source covers the complete 12-month
+          period preceding the order.
+        data_tests:
+          - not_null
