@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: fct_orders_segmented
+    description: >
+      Business-facing segmented order fact table containing all available
+      orders from 2025 and 2026. This model is intended to support the
+      LookML semantic layer and marketing analysis.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of an order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Identifier of the customer who placed the order.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date on which the order was placed.
+        data_tests:
+          - not_null
+
+      - name: order_net_sales
+        description: Net sales amount associated with the order.
+        data_tests:
+          - not_null
+
+      - name: qty_product
+        description: Total quantity of product units included in the order.
+        data_tests:
+          - not_null
+
+      - name: prior_orders_12m
+        description: >
+          Number of orders placed by the customer on earlier calendar
+          dates during the preceding 12 months.
+        data_tests:
+          - not_null
+
+      - name: order_segmentation
+        description: >
+          Segment assigned using the customer's preceding 12-month
+          order history.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - New
+                  - Returning
+                  - VIP
+
+      - name: has_complete_12_month_history
+        description: >
+          Indicates whether the source contains the complete 12-month
+          period preceding the order.
+        data_tests:
+          - not_null

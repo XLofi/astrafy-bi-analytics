@@ -13,8 +13,9 @@
     )
 }}
 
-{% set exercise_year = var('exercise_year') | int %}
-{% set next_year = exercise_year + 1 %}
+{% set start_year = var('order_history_start_year') | int %}
+{% set end_year = var('exercise_year') | int %}
+{% set next_year = end_year + 1 %}
 
 select
     order_id,
@@ -26,7 +27,7 @@ select
     order_segmentation,
     has_complete_12_month_history
 
-from {{ ref('fct_orders_segmented') }}
+from {{ ref('int_orders_segmented') }}
 
-where order_date >= date('{{ exercise_year }}-01-01')
+where order_date >= date('{{ start_year }}-01-01')
   and order_date < date('{{ next_year }}-01-01')
