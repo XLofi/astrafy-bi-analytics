@@ -23,6 +23,7 @@ The implementation covers all three parts of the challenge:
 
 ## Documentation
 - [Marketing dashboard design](docs/dashboard_design.md)
+- [Marketing dashboard PDF](docs/dashboard/Marketing_Daily_Performance_Dashboard.pdf)
 
 ### Project documentation
 
