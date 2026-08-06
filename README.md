@@ -3,10 +3,15 @@
 This repository contains the analytics engineering solution for the Astrafy
 **Looker / BI / Analytics / Insights Engineer** take-home challenge.
 
-The current implementation covers **Part 1: Coding Challenge** using dbt Core
-and BigQuery. It includes source preparation, layered models, customer
-segmentation, data-quality controls, BigQuery optimizations, and documented
-answers to Exercises 1–6.
+The implementation covers all three parts of the challenge:
+
+- **Part 1 — Coding Challenge:** dbt and BigQuery transformations, tests,
+  documentation, customer segmentation, and Exercises 1–6.
+- **Part 2 — LookML Semantic Layer:** modular order and product Explores,
+  business-oriented dimensions and measures, drill-downs, dynamic customer
+  segmentation, and Conversational Analytics metadata.
+- **Part 3 — Dashboard Design:** a proposed daily marketing dashboard covering
+  revenue, orders, customers, segmentation, products, and optional forecasting.
 
 ## Technology stack
 
@@ -17,6 +22,7 @@ answers to Exercises 1–6.
 - Git and GitHub
 
 ## Documentation
+- [Marketing dashboard design](docs/dashboard_design.md)
 
 ### Project documentation
 
