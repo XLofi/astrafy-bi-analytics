@@ -21,6 +21,17 @@ order_segmentation
 customer_id
 ```
 
+`fct_order_lines` is clustered by:
+
+```text
+product_id
+order_segmentation
+customer_id
+```
+
+This supports product rankings, segment filtering, and customer-level product
+analysis.
+
 ## Reusable transformations
 
 Product aggregation, revenue reconciliation, rolling history, and segmentation
@@ -38,3 +49,16 @@ For billions of rows:
 - BigQuery labels and cost monitoring
 - Required date filters in BI Explores
 - Scheduled orchestration
+
+## Separate semantic grains
+
+Order analysis and product analysis are exposed through separate LookML
+Explores:
+
+```text
+Order Performance   → one row per order
+Product Performance → one row per order and product
+```
+
+This prevents fanout and avoids inflated order counts, revenue, and average
+order metrics when product-level fields are queried.

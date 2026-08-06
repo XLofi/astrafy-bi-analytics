@@ -37,6 +37,25 @@ answers to Exercises 1–6.
 - [Exercise 5 — Customer order segmentation](docs/exercises/exercise_05.md)
 - [Exercise 6 — Final segmented 2026 table](docs/exercises/exercise_06.md)
 
+## Semantic layer status
+
+The LookML project currently exposes two business-facing Explores:
+
+| Explore | Grain | Primary use |
+|---|---|---|
+| `Order Performance` | One row per order | Revenue, orders, average order value, customers, product quantities, and customer segmentation |
+| `Product Performance` | One row per order and product | Product revenue, units sold, product penetration, customers, and segment-level product performance |
+
+The semantic layer reads from:
+
+```text
+fct_orders_segmented
+fct_order_lines
+```
+
+The order and product Explores are kept separate to prevent order-level
+measures from being multiplied by product-level rows.
+
 ## Quick start
 
 ```bash
@@ -58,14 +77,14 @@ dbt docs serve --port 8080 --no-browser
 ## Current build result
 
 ```text
-Models: 8
+Models: 10
 Analyses: 7
-Data tests: 60
-Passes: 67
+Data tests: 82
+Passes: 91
 Warnings: 1
 Errors: 0
 Skipped: 0
-Total executed nodes: 68
+Total executed nodes: 92
 ```
 
 The single warning corresponds to one documented orphan sales order.

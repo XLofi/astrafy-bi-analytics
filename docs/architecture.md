@@ -20,7 +20,14 @@ Intermediate
         ▼
 Marts
 ├── fct_orders
-└── fct_orders_segmented_2026
+├── fct_orders_segmented
+├── fct_orders_segmented_2026
+└── fct_order_lines
+        │
+        ▼
+LookML semantic layer
+├── Order Performance Explore
+└── Product Performance Explore
 ```
 
 ## Raw layer
@@ -62,3 +69,35 @@ No business aggregation or year filtering is applied in staging.
 Small exercise results are stored in `analyses/` because they do not require
 permanent BigQuery tables. Reusable, business-facing datasets are materialized
 under `models/marts/`.
+
+## LookML semantic layer
+
+The semantic layer contains two separate Explores.
+
+### Order Performance
+
+The `orders` view reads from `fct_orders_segmented` and preserves the
+one-row-per-order grain. It supports:
+
+- Order count
+- Net revenue
+- Average order value
+- Unique customers
+- Average product units per order
+- New, Returning, and VIP analysis
+
+### Product Performance
+
+The `order_lines` view reads from `fct_order_lines` and preserves the
+one-row-per-order-and-product grain. It supports:
+
+- Product revenue
+- Units sold
+- Product-line count
+- Distinct order count
+- Distinct products
+- Purchasing customers
+- Product performance by customer segment
+
+The Explores remain separate to avoid fanout between order-level and
+product-level metrics.
