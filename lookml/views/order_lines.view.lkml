@@ -141,16 +141,47 @@ view: order_lines {
     group_label: "Customer Segmentation"
   }
 
-  dimension: order_segmentation {
+  dimension: source_order_segmentation {
     type: string
     sql: ${TABLE}.order_segmentation ;;
+
+    label: "Source Order Segmentation"
+
+    description: "
+      Warehouse-computed segmentation retained as a hidden technical
+      field for reconciliation with the LookML business definition.
+    "
+
+    hidden: yes
+  }
+
+  dimension: order_segmentation {
+    case: {
+      when: {
+        sql: ${prior_orders_12m} = 0 ;;
+        label: "New"
+      }
+
+      when: {
+        sql: ${prior_orders_12m} >= 1
+          and ${prior_orders_12m} <= 3 ;;
+        label: "Returning"
+      }
+
+      when: {
+        sql: ${prior_orders_12m} >= 4 ;;
+        label: "VIP"
+      }
+
+      else: "Unknown"
+    }
 
     label: "Customer Order Segment"
 
     description: "
-      Segment assigned to the order using the customer's preceding
-      12-month order history. New means zero prior orders, Returning
-      means one to three, and VIP means four or more.
+      Dynamic customer segment calculated directly in LookML from the
+      number of prior orders in the preceding 12 months. New means zero
+      prior orders, Returning means one to three, and VIP means four or more.
     "
 
     synonyms: [
