@@ -1,6 +1,6 @@
 view: orders {
   sql_table_name:
-    `astrafy-bch-xlofi-2026.astrafy_analytics.fct_orders_segmented_2026`
+    `astrafy-bch-xlofi-2026.astrafy_analytics.fct_orders_segmented`
   ;;
 
   set: order_details {
